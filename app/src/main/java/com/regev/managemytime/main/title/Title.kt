@@ -1,5 +1,6 @@
 package com.regev.managemytime.main.title
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.regev.managemytime.R
 
@@ -42,26 +45,77 @@ fun MainTitle(
 @Composable
 fun ImageAndTitle(imageResource: Int, greeting: String, name: String) {
     Row(modifier = Modifier.
-    width(60.dp)
+        wrapContentWidth()
         .padding(horizontal = 10.dp)
-        .fillMaxHeight()) {
+        .fillMaxHeight()
+        .background(Color.LightGray),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
         CircularImage(
             imageResource = imageResource,
             contentDescription = "Profile picture",
             size = 120,
             borderWidth = 3f,
-            borderColor = Color.Black
+            borderColor = Color.Transparent
         )
-        Spacer(modifier = Modifier
-            .fillMaxHeight()
-            .width(10.dp)
-        )
-        Column {
-            Text(greeting)
-            Text(name)
+        Spacer(modifier = Modifier.width(10.dp))
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = greeting,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White
+            )
+            Text(
+                text = name,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White
+            )
         }
     }
 }
+
+@Composable
+fun CircularImage(
+    imageResource: Int,
+    contentDescription: String? = null,
+    size: Int = 100,
+    borderWidth: Float,
+    borderColor: Color
+) {
+    Box(
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(
+            modifier = Modifier
+                .size(size.dp)
+                .border(width = borderWidth.dp, color = borderColor, shape = CircleShape)
+        ) {
+            drawCircle(
+                color = Color.White,
+                radius = size / 2f
+            )
+        }
+        Image(
+            painter = painterResource(id = imageResource),
+            contentDescription = contentDescription,
+            modifier = Modifier
+                .size((size - borderWidth * 2).dp)
+                .clip(CircleShape)
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun sdf() {
+    ImageAndTitle(R.drawable.ic_launcher_background, "Hi", "sharon")
+}
+
 
 @Composable
 fun CircularButton(
@@ -89,25 +143,10 @@ fun CircularButton(
 
 }
 
-@Composable
-fun CircularImage(
-    imageResource: Int,
-    contentDescription: String? = null,
-    size: Int = 100,
-    borderWidth: Float = 2f,
-    borderColor: Color = Color.Gray
-    ) {
-    Image(
-        painter = painterResource(id = imageResource),
-        contentDescription = contentDescription,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(size.dp)
-            .clip(CircleShape)
-            .border(borderWidth.dp, borderColor, CircleShape)
 
-    )
-}
+
+
+
 
 @Composable
 fun ButtonsForTitle( firstButtonIcon: ImageVector,
